@@ -14,3 +14,12 @@ pnpm i
 docker compose up
 make migrateup
 ```
+
+## Features
+
+1. Authentication
+
+   - User can login via Discord.
+   - User can logout via Discord.
+
+2. Enter a course
