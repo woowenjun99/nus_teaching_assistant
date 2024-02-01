@@ -1,17 +1,16 @@
 BEGIN;
 	CREATE TABLE Users (
-		created_at TIMESTAMPTZ(6) DEFAULT(CURRENT_TIMESTAMP),
-		is_admin BOOL NOT NULL DEFAULT(FALSE),
+		created_at TIMESTAMPTZ(6) NOT NULL DEFAULT(CURRENT_TIMESTAMP),
 		email TEXT UNIQUE NOT NULL,
 		full_name TEXT,
+		is_admin BOOL NOT NULL DEFAULT(FALSE),
 		student_id TEXT PRIMARY KEY
 	);
 
 	CREATE TABLE Tutorials (
 		course_code TEXT NOT NULL,
 		course_offering TEXT NOT NULL,
-		is_course_over BOOL DEFAULT(FALSE),
-		joined_at TIMESTAMPTZ(6) DEFAULT(CURRENT_TIMESTAMP),
+		is_over BOOL NOT NULL DEFAULT(FALSE),
 		PRIMARY KEY (course_code, course_offering)
 	);
 
@@ -20,6 +19,7 @@ BEGIN;
 	CREATE TABLE TutorialMembers (
 		course_code TEXT NOT NULL,
 		course_offering TEXT NOT NULL,
+		joined_at TIMESTAMPTZ(6) NOT NULL DEFAULT(CURRENT_TIMESTAMP),
 		student_id TEXT NOT NULL,
 		student_role Roles NOT NULL DEFAULT('students'),
 		FOREIGN KEY (student_id) REFERENCES Users ON DELETE CASCADE,
