@@ -3,7 +3,6 @@ CREATE TABLE Users (
 	is_admin BOOL NOT NULL DEFAULT(FALSE),
 	email TEXT UNIQUE NOT NULL,
 	full_name TEXT,
-	hashed_password TEXT NOT NULL,
 	student_id TEXT PRIMARY KEY
 );
 
