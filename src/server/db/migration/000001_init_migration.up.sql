@@ -10,22 +10,18 @@ BEGIN;
 	CREATE TABLE Tutorials (
 		course_code TEXT NOT NULL,
 		course_offering TEXT NOT NULL,
-		is_over BOOL NOT NULL DEFAULT(FALSE),
-		PRIMARY KEY (course_code, course_offering)
+		tutorial_group TEXT NOT NULL,
+		teaching_assistant TEXT NOT NULL REFERENCES Users,
+		PRIMARY KEY (course_code, course_offering, tutorial_group)
 	);
-
-	CREATE TYPE Roles AS ENUM('students', 'teaching_assistant');
 
 	CREATE TABLE TutorialMembers (
 		course_code TEXT NOT NULL,
 		course_offering TEXT NOT NULL,
 		joined_at TIMESTAMPTZ(6) NOT NULL DEFAULT(CURRENT_TIMESTAMP),
-		student_id TEXT NOT NULL,
-		student_role Roles NOT NULL DEFAULT('students'),
-		FOREIGN KEY (student_id) REFERENCES Users ON DELETE CASCADE,
-		FOREIGN KEY (course_code,
-			course_offering) REFERENCES Tutorials (course_code,
-			course_offering),
+		student_id TEXT NOT NULL REFERENCES Users ON DELETE CASCADE,
+		tutorial_group TEXT NOT NULL,
+		FOREIGN KEY (course_code, course_offering, tutorial_group) REFERENCES Tutorials ON DELETE CASCADE,
 		PRIMARY KEY (student_id, course_code, course_offering)
 	);
 

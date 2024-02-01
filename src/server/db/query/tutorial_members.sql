@@ -1,5 +1,5 @@
 -- name: GetUserTutorials :many
-SELECT tm.course_code, tm.course_offering, tm.student_role, t.is_over
+SELECT tm.course_code, tm.course_offering
 FROM TutorialMembers as tm
 LEFT JOIN Tutorials as t
 ON tm.course_code = t.course_code AND tm.course_offering = t.course_offering

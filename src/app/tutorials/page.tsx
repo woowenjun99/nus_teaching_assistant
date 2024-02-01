@@ -1,7 +1,7 @@
-import { Card, CardTitle, CardHeader } from "~/components/ui/card";
-import Link from "next/link";
+import { Card } from "~/components/ui/card";
 import { redirect } from "next/navigation";
 import { getServerAuthSession } from "~/server/auth";
+import { api } from "~/trpc/server";
 
 export default async function Page() {
   // Redirect the user to the login page if the user is not authenticated
@@ -9,15 +9,13 @@ export default async function Page() {
   if (!session) redirect("/");
 
   // Fetch all the modules associated with the user
+  const tutorials = await api.tutorials.getUserTutorials.query({ offset: 0 });
 
   return (
     <main className="container max-w-md">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-center">Sign In</CardTitle>
-          <Link href="/api/auth/signin">Login</Link>
-        </CardHeader>
-      </Card>
+      {tutorials.map((tutorial) => {
+        return <Card key={tutorial.courseCode}></Card>;
+      })}
     </main>
   );
 }

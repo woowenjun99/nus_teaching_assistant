@@ -5,7 +5,7 @@ interface Client {
 }
 
 export const getUserTutorialsQuery = `-- name: GetUserTutorials :many
-SELECT tm.course_code, tm.course_offering, tm.student_role, t.is_over
+SELECT tm.course_code, tm.course_offering
 FROM TutorialMembers as tm
 LEFT JOIN Tutorials as t
 ON tm.course_code = t.course_code AND tm.course_offering = t.course_offering
@@ -21,8 +21,6 @@ export interface GetUserTutorialsArgs {
 export interface GetUserTutorialsRow {
     courseCode: string;
     courseOffering: string;
-    studentRole: string;
-    isOver: boolean | null;
 }
 
 export async function getUserTutorials(client: Client, args: GetUserTutorialsArgs): Promise<GetUserTutorialsRow[]> {
@@ -34,9 +32,7 @@ export async function getUserTutorials(client: Client, args: GetUserTutorialsArg
     return result.rows.map(row => {
         return {
             courseCode: row[0],
-            courseOffering: row[1],
-            studentRole: row[2],
-            isOver: row[3]
+            courseOffering: row[1]
         };
     });
 }
