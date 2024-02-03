@@ -12,7 +12,7 @@ specifiers:
   '@trpc/react-query': ^10.43.6
   '@trpc/server': ^10.43.6
   '@types/eslint': ^8.44.7
-  '@types/node': ^18.19.13
+  '@types/node': ^20.11.16
   '@types/pg': ^8.11.0
   '@types/react': ^18.2.52
   '@types/react-dom': ^18.2.15
@@ -69,7 +69,7 @@ dependencies:
 
 devDependencies:
   '@types/eslint': 8.56.2
-  '@types/node': 18.19.13
+  '@types/node': 20.11.16
   '@types/pg': 8.11.0
   '@types/react': 18.2.52
   '@types/react-dom': 18.2.18
@@ -1030,8 +1030,8 @@ packages:
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
     dev: true
 
-  /@types/node/18.19.13:
-    resolution: {integrity: sha512-kgnbRDj8ioDyGxoiaXsiu1Ybm/K14ajCgMOkwiqpHrnF7d7QiYRoRqHIpglMMs3DwXinlK4qJ8TZGlj4hfleJg==}
+  /@types/node/20.11.16:
+    resolution: {integrity: sha512-gKb0enTmRCzXSSUJDq6/sPcqrfCv2mkkG6Jt/clpn5eiCbKTY+SgZUxo+p8ZKMof5dCp9vHQUAB7wOUTod22wQ==}
     dependencies:
       undici-types: 5.26.5
     dev: true
@@ -1039,7 +1039,7 @@ packages:
   /@types/pg/8.11.0:
     resolution: {integrity: sha512-sDAlRiBNthGjNFfvt0k6mtotoVYVQ63pA8R4EMWka7crawSR60waVYR0HAgmPRs/e2YaeJTD/43OoZ3PFw80pw==}
     dependencies:
-      '@types/node': 18.19.13
+      '@types/node': 20.11.16
       pg-protocol: 1.6.0
       pg-types: 4.0.2
     dev: true
