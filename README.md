@@ -4,6 +4,7 @@
 
 1. Golang Migrate CLI installed
 2. Docker installed
+3. SQLC installed
 
 ## Steps
 
@@ -22,4 +23,6 @@ make migrateup
    - User can login via Discord.
    - User can logout via Discord.
 
-2. Enter a course
+2. Enter a tutorial
+
+3.
