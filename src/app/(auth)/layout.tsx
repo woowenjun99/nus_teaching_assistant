@@ -7,13 +7,21 @@ import {
   NavigationMenuItem,
   NavigationMenuList,
 } from "~/components/ui/navigation-menu";
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, List } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
   DropdownMenuItem,
 } from "~/components/ui/dropdown-menu";
+import {
+  Drawer,
+  DrawerTrigger,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+} from "~/components/ui/drawer";
+import { signOut } from "next-auth/react";
 import { Button } from "~/components/ui/button";
 import { useTheme } from "next-themes";
 
@@ -25,7 +33,39 @@ function NavigationBar() {
       <div className="container flex h-14 justify-between">
         <NavigationMenu>
           <NavigationMenuList className="gap-6 text-sm">
-            <NavigationMenuItem>
+            {/* Drawer */}
+            <NavigationMenuItem className="sm:hidden">
+              <Drawer direction="left">
+                <DrawerTrigger asChild>
+                  <Button variant="outline" size="icon">
+                    <List />
+                  </Button>
+                </DrawerTrigger>
+                <DrawerContent className="h-screen w-64">
+                  <DrawerHeader>
+                    <DrawerTitle className="text-center">
+                      NUS Teaching Assistant
+                    </DrawerTitle>
+                  </DrawerHeader>
+                  <Link
+                    href="/tutorials"
+                    className="mx-6 flex items-start py-2 text-foreground/60 hover:text-foreground/80"
+                  >
+                    Tutorials
+                  </Link>
+                  <Button
+                    variant="outline"
+                    className="mx-2"
+                    onClick={() => signOut()}
+                  >
+                    Logout
+                  </Button>
+                </DrawerContent>
+              </Drawer>
+            </NavigationMenuItem>
+
+            {/* Navbar items */}
+            <NavigationMenuItem className="hidden md:block">
               <Link
                 href="/tutorials"
                 className="text-foreground/60 hover:text-foreground/80"
