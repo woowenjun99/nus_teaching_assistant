@@ -19,14 +19,15 @@ declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
       id: string;
+      isAdmin: boolean;
       // ...other properties
       // role: UserRole;
     } & DefaultSession["user"];
   }
 
   // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
+  // ...other properties
+  // role: UserRole;
   // }
 }
 
@@ -38,19 +39,27 @@ declare module "next-auth" {
 export const authOptions: NextAuthOptions = {
   callbacks: {
     signIn: async ({ user }) => {
-      // Search for an account associated with this discord.
-      // If not exists, we just create one,
+      // Explicitly create a callback function here so that we can save the user
+      // in the database when he first login
       const foundUser = await getUser(pool, { id: user.id });
       if (!foundUser) await createUser(pool, { id: user.id });
       return true;
     },
-    session: ({ session, token }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: token.sub,
-      },
-    }),
+    session: async ({ session, token }) => {
+      // Used to get the information about whether the user is admin
+      if (session.user.isAdmin === undefined && token.sub) {
+        const foundUser = await getUser(pool, { id: token.sub });
+        session.user.isAdmin = foundUser ? foundUser.isAdmin : false;
+      }
+
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: token.sub,
+        },
+      };
+    },
   },
   providers: [
     DiscordProvider({

@@ -12,7 +12,8 @@ export default async function Page() {
   const tutorials = await api.tutorials.getUserTutorials.query({ offset: 0 });
 
   return (
-    <main className="container max-w-md">
+    <main className="container w-full">
+      <h1 className="py-2 text-2xl font-medium">Your Tutorials</h1>
       {tutorials.map((tutorial) => {
         return <Card key={tutorial.courseCode}></Card>;
       })}
