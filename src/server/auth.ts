@@ -6,6 +6,8 @@ import {
 import DiscordProvider from "next-auth/providers/discord";
 
 import { env } from "~/env";
+import { createUser, getUser } from "./db/sqlc/users_sql";
+import { pool } from "./db/pool";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -35,6 +37,13 @@ declare module "next-auth" {
  */
 export const authOptions: NextAuthOptions = {
   callbacks: {
+    signIn: async ({ user }) => {
+      // Search for an account associated with this discord.
+      // If not exists, we just create one,
+      const foundUser = await getUser(pool, { id: user.id });
+      if (!foundUser) await createUser(pool, { id: user.id });
+      return true;
+    },
     session: ({ session, token }) => ({
       ...session,
       user: {
