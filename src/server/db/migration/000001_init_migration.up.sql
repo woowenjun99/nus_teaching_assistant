@@ -10,6 +10,8 @@ BEGIN;
 	CREATE TABLE Tutorials (
 		course_code TEXT NOT NULL,
 		course_offering TEXT NOT NULL,
+		is_over BOOL NOT NULL DEFAULT(FALSE),
+		start_date TIMESTAMPTZ(6) NOT NULL DEFAULT(CURRENT_TIMESTAMP),
 		tutorial_group TEXT NOT NULL,
 		teaching_assistant TEXT NOT NULL REFERENCES Users,
 		PRIMARY KEY (course_code, course_offering, tutorial_group)

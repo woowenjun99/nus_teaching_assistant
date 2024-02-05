@@ -45,18 +45,21 @@ export const authOptions: NextAuthOptions = {
       if (!foundUser) await createUser(pool, { id: user.id });
       return true;
     },
-    session: async ({ session, token }) => {
+    jwt: async ({ token }) => {
       // Used to get the information about whether the user is admin
-      if (session.user.isAdmin === undefined && token.sub) {
+      if (token.isAdmin === undefined && token.sub) {
         const foundUser = await getUser(pool, { id: token.sub });
-        session.user.isAdmin = foundUser ? foundUser.isAdmin : false;
+        token.isAdmin = foundUser ? foundUser.isAdmin : false;
       }
-
+      return token;
+    },
+    session: async ({ session, token }) => {
       return {
         ...session,
         user: {
           ...session.user,
           id: token.sub,
+          isAdmin: token.isAdmin,
         },
       };
     },

@@ -21,7 +21,7 @@ export async function createUser(client: Client, args: CreateUserArgs): Promise<
 }
 
 export const getUserQuery = `-- name: GetUser :one
-SELECT created_at, email, full_name, is_admin, id FROM Users WHERE id=$1`;
+SELECT created_at, email, full_name, is_admin, id FROM Users WHERE id=$1 LIMIT 1 OFFSET 0`;
 
 export interface GetUserArgs {
     id: string;
