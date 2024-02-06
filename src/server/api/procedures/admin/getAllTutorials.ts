@@ -1,4 +1,4 @@
-import { getAllTutorials } from "~/server/db/sqlc/tutorials_sql";
+import { getAllTutorials } from "~/server/db/sqlc/tutorial_groups_sql";
 import { protectedProcedure } from "../../trpc";
 import { pool } from "~/server/db/pool";
 import { z } from "zod";

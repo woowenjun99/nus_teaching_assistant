@@ -40,3 +40,22 @@ export async function getAllTutorials(client: Client, args: GetAllTutorialsArgs)
     });
 }
 
+export const createTutorialGroupQuery = `-- name: CreateTutorialGroup :exec
+INSERT INTO TutorialGroups (course_code, course_offering, teaching_assistant, tutorial_group)
+VALUES ($1, $2, $3, $4)`;
+
+export interface CreateTutorialGroupArgs {
+    courseCode: string;
+    courseOffering: string;
+    teachingAssistant: string;
+    tutorialGroup: string;
+}
+
+export async function createTutorialGroup(client: Client, args: CreateTutorialGroupArgs): Promise<void> {
+    await client.query({
+        text: createTutorialGroupQuery,
+        values: [args.courseCode, args.courseOffering, args.teachingAssistant, args.tutorialGroup],
+        rowMode: "array"
+    });
+}
+

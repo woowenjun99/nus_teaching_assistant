@@ -27,8 +27,13 @@ import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { api } from "~/trpc/react";
+import { Loader2 } from "lucide-react";
 
 export default function CreateTutorialSheet() {
+  const { mutateAsync, isLoading } =
+    api.tutorialGroups.createTutorialGroup.useMutation();
+
   const formSchema = z.object({
     courseCode: z.string(),
     courseOffering: z.string(),
@@ -39,8 +44,8 @@ export default function CreateTutorialSheet() {
     resolver: zodResolver(formSchema),
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  function onSubmit(values: z.infer<typeof formSchema>): Promise<void> {
+    return mutateAsync(values);
   }
 
   return (
@@ -118,8 +123,12 @@ export default function CreateTutorialSheet() {
               )}
             />
 
-            <Button type="submit" className="w-full">
-              Create Tutorial
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                "Create Tutorial"
+              )}
             </Button>
           </form>
         </Form>
