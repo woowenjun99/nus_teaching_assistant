@@ -5,7 +5,7 @@ interface Client {
 }
 
 export const getAllTutorialsQuery = `-- name: GetAllTutorials :many
-SELECT course_code, course_offering, is_over, start_date, tutorial_group, teaching_assistant FROM Tutorials
+SELECT course_code, course_offering, is_over, start_date, tutorial_group, teaching_assistant FROM TutorialGroups
 ORDER BY start_date
 LIMIT 10 OFFSET $1`;
 

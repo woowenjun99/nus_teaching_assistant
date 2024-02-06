@@ -7,7 +7,7 @@ BEGIN;
 		id TEXT PRIMARY KEY
 	);
 
-	CREATE TABLE Tutorials (
+	CREATE TABLE TutorialGroups (
 		course_code TEXT NOT NULL,
 		course_offering TEXT NOT NULL,
 		is_over BOOL NOT NULL DEFAULT(FALSE),
@@ -23,7 +23,7 @@ BEGIN;
 		joined_at TIMESTAMPTZ(6) NOT NULL DEFAULT(CURRENT_TIMESTAMP),
 		student_id TEXT NOT NULL REFERENCES Users ON DELETE CASCADE,
 		tutorial_group TEXT NOT NULL,
-		FOREIGN KEY (course_code, course_offering, tutorial_group) REFERENCES Tutorials ON DELETE CASCADE,
+		FOREIGN KEY (course_code, course_offering, tutorial_group) REFERENCES TutorialGroups ON DELETE CASCADE,
 		PRIMARY KEY (student_id, course_code, course_offering)
 	);
 
