@@ -1,5 +1,5 @@
 import { createTRPCRouter } from "~/server/api/trpc";
-import { getUserTutorialsProcedure } from "../procedures/tutorialGroups/getUserTutorials";
+import { getUserTutorialsProcedure } from "../procedures/tutorials/getUserTutorials";
 import { getAllTutorialsProcedure } from "../procedures/admin/getAllTutorials";
 import { createTutorialGroupProcedure } from "../procedures/admin/createTutorialGroup";
 

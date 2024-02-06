@@ -29,8 +29,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { api } from "~/trpc/react";
 import { Loader2 } from "lucide-react";
+import { useToast } from "~/components/ui/use-toast";
 
 export default function CreateTutorialSheet() {
+  const { toast } = useToast();
   const { mutateAsync, isLoading } =
     api.tutorialGroups.createTutorialGroup.useMutation();
 
@@ -44,8 +46,20 @@ export default function CreateTutorialSheet() {
     resolver: zodResolver(formSchema),
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>): Promise<void> {
-    return mutateAsync(values);
+  async function onSubmit(values: z.infer<typeof formSchema>): Promise<void> {
+    try {
+      await mutateAsync(values);
+      toast({
+        title: "Success!",
+        description: "A tutorial group has been created",
+      });
+    } catch (e) {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: (e as Error).message,
+      });
+    }
   }
 
   return (
