@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { getServerAuthSession } from "~/server/auth";
-import CreateTutorialSheet from "./create_tutorial_sheet";
+import dynamic from "next/dynamic";
+const CreateTutorialSheet = dynamic(() => import("./create_tutorial_sheet"));
 
 export default async function Page() {
   // Redirect the user to the login page if the user is not authenticated

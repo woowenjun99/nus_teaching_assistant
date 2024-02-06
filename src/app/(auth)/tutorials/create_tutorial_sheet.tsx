@@ -11,11 +11,18 @@ import {
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "~/components/ui/form";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "~/components/ui/select";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -44,14 +51,10 @@ export default function CreateTutorialSheet() {
       <SheetContent side="right">
         <SheetHeader>
           <SheetTitle>Create new tutorial</SheetTitle>
-          <SheetDescription>
-            Create a new tutorial group here. Do note that since we are an
-            unofficial application, we will not be creating tutorials for all
-            groups.
-          </SheetDescription>
+          <SheetDescription>Create a new tutorial group.</SheetDescription>
         </SheetHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="py-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="py-2">
             <FormField
               control={form.control}
               name="courseCode"
@@ -61,13 +64,63 @@ export default function CreateTutorialSheet() {
                   <FormControl>
                     <Input placeholder="e.g. CS2040C" {...field} />
                   </FormControl>
-                  <FormDescription>
-                    Enter the course code manually as we do not want to fetch
-                    all the data.
-                  </FormDescription>
+                  <FormMessage />
                 </FormItem>
               )}
             />
+
+            <FormField
+              control={form.control}
+              name="courseOffering"
+              render={({ field }) => (
+                <FormItem className="py-4">
+                  <FormLabel>Course Offering</FormLabel>
+                  <Select onValueChange={field.onChange}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a course offering" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="AY22/23 Sem 2">
+                        AY22/23 Sem 2
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="tutorialGroup"
+              render={({ field }) => (
+                <FormItem className="pb-4">
+                  <FormLabel>Tutorial Group</FormLabel>
+                  <Select onValueChange={field.onChange}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a tutorial group" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="1">1</SelectItem>
+                      <SelectItem value="2">2</SelectItem>
+                      <SelectItem value="3">3</SelectItem>
+                      <SelectItem value="4">4</SelectItem>
+                      <SelectItem value="5">5</SelectItem>
+                      <SelectItem value="6">6</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <Button type="submit" className="w-full">
+              Create Tutorial
+            </Button>
           </form>
         </Form>
       </SheetContent>
