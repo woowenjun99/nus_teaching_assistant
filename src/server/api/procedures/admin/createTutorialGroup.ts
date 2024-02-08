@@ -25,7 +25,6 @@ export const createTutorialGroupProcedure = protectedProcedure
       await createTutorialGroup(pool, {
         courseCode: input.courseCode,
         courseOffering: input.courseOffering,
-        tutorialGroup: input.tutorialGroup,
         teachingAssistant: ctx.session.user.id,
       });
     });

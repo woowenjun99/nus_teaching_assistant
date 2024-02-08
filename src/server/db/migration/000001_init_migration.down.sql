@@ -1,3 +1,3 @@
 BEGIN;
-    DROP TABLE IF EXISTS Users, TutorialGroups, TutorialMembers, TutorialQuestions CASCADE;
+    DROP TABLE IF EXISTS Users, TutorialGroups, TutorialMembers CASCADE;
 COMMIT;

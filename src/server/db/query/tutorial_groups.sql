@@ -1,8 +1,15 @@
--- name: GetAllTutorials :many
-SELECT * FROM TutorialGroups
-ORDER BY start_date
-LIMIT 10 OFFSET $1;
+-- name: GetUserTutorialGroups :many
+SELECT course_code, course_offering, teaching_assistant
+FROM TutorialMembers 
+WHERE student_id = $1
+UNION
+SELECT course_code, course_offering, teaching_assistant
+FROM TutorialGroups
+WHERE teaching_assistant = $1;
+
+-- name: GetAllTutorialGroups :many
+SELECT * FROM TutorialGroups;
 
 -- name: CreateTutorialGroup :exec
-INSERT INTO TutorialGroups (course_code, course_offering, teaching_assistant, tutorial_group)
-VALUES ($1, $2, $3, $4);
+INSERT INTO TutorialGroups(course_code, course_offering, teaching_assistant)
+VALUES ($1, $2, $3);

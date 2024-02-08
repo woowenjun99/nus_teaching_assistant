@@ -4,57 +4,78 @@ interface Client {
     query: (config: QueryArrayConfig) => Promise<QueryArrayResult>;
 }
 
-export const getAllTutorialsQuery = `-- name: GetAllTutorials :many
-SELECT course_code, course_offering, is_over, start_date, tutorial_group, teaching_assistant FROM TutorialGroups
-ORDER BY start_date
-LIMIT 10 OFFSET $1`;
+export const getUserTutorialGroupsQuery = `-- name: GetUserTutorialGroups :many
+SELECT course_code, course_offering, teaching_assistant
+FROM TutorialMembers 
+WHERE student_id = $1
+UNION
+SELECT course_code, course_offering, teaching_assistant
+FROM TutorialGroups
+WHERE teaching_assistant = $1`;
 
-export interface GetAllTutorialsArgs {
-    offset: string;
+export interface GetUserTutorialGroupsArgs {
+    studentId: string;
 }
 
-export interface GetAllTutorialsRow {
+export interface GetUserTutorialGroupsRow {
     courseCode: string;
     courseOffering: string;
-    isOver: boolean;
-    startDate: Date;
-    tutorialGroup: string;
     teachingAssistant: string;
 }
 
-export async function getAllTutorials(client: Client, args: GetAllTutorialsArgs): Promise<GetAllTutorialsRow[]> {
+export async function getUserTutorialGroups(client: Client, args: GetUserTutorialGroupsArgs): Promise<GetUserTutorialGroupsRow[]> {
     const result = await client.query({
-        text: getAllTutorialsQuery,
-        values: [args.offset],
+        text: getUserTutorialGroupsQuery,
+        values: [args.studentId],
         rowMode: "array"
     });
     return result.rows.map(row => {
         return {
             courseCode: row[0],
             courseOffering: row[1],
-            isOver: row[2],
-            startDate: row[3],
-            tutorialGroup: row[4],
-            teachingAssistant: row[5]
+            teachingAssistant: row[2]
+        };
+    });
+}
+
+export const getAllTutorialGroupsQuery = `-- name: GetAllTutorialGroups :many
+SELECT course_code, course_offering, teaching_assistant FROM TutorialGroups`;
+
+export interface GetAllTutorialGroupsRow {
+    courseCode: string;
+    courseOffering: string;
+    teachingAssistant: string;
+}
+
+export async function getAllTutorialGroups(client: Client): Promise<GetAllTutorialGroupsRow[]> {
+    const result = await client.query({
+        text: getAllTutorialGroupsQuery,
+        values: [],
+        rowMode: "array"
+    });
+    return result.rows.map(row => {
+        return {
+            courseCode: row[0],
+            courseOffering: row[1],
+            teachingAssistant: row[2]
         };
     });
 }
 
 export const createTutorialGroupQuery = `-- name: CreateTutorialGroup :exec
-INSERT INTO TutorialGroups (course_code, course_offering, teaching_assistant, tutorial_group)
-VALUES ($1, $2, $3, $4)`;
+INSERT INTO TutorialGroups(course_code, course_offering, teaching_assistant)
+VALUES ($1, $2, $3)`;
 
 export interface CreateTutorialGroupArgs {
     courseCode: string;
     courseOffering: string;
     teachingAssistant: string;
-    tutorialGroup: string;
 }
 
 export async function createTutorialGroup(client: Client, args: CreateTutorialGroupArgs): Promise<void> {
     await client.query({
         text: createTutorialGroupQuery,
-        values: [args.courseCode, args.courseOffering, args.teachingAssistant, args.tutorialGroup],
+        values: [args.courseCode, args.courseOffering, args.teachingAssistant],
         rowMode: "array"
     });
 }

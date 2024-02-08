@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { getServerAuthSession } from "~/server/auth";
+import { api } from "~/trpc/server";
 import dynamic from "next/dynamic";
 const CreateTutorialSheet = dynamic(() => import("./create_tutorial_sheet"));
 
@@ -7,6 +8,7 @@ export default async function Page() {
   // Redirect the user to the login page if the user is not authenticated
   const session = await getServerAuthSession();
   if (!session) redirect("/");
+  const tutorials = await api.tutorialGroups.getUserTutorials.query();
 
   return (
     <main className="container w-full">
