@@ -9,7 +9,6 @@ export const createTutorialGroupProcedure = protectedProcedure
     z.object({
       courseCode: z.string(),
       courseOffering: z.string(),
-      tutorialGroup: z.string(),
     }),
   )
   .mutation(async ({ ctx, input }) => {

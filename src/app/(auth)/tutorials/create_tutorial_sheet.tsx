@@ -39,7 +39,6 @@ export default function CreateTutorialSheet() {
   const formSchema = z.object({
     courseCode: z.string(),
     courseOffering: z.string(),
-    tutorialGroup: z.string(),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -104,32 +103,6 @@ export default function CreateTutorialSheet() {
                       <SelectItem value="AY22/23 Sem 2">
                         AY22/23 Sem 2
                       </SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="tutorialGroup"
-              render={({ field }) => (
-                <FormItem className="pb-4">
-                  <FormLabel>Tutorial Group</FormLabel>
-                  <Select onValueChange={field.onChange}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a tutorial group" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="1">1</SelectItem>
-                      <SelectItem value="2">2</SelectItem>
-                      <SelectItem value="3">3</SelectItem>
-                      <SelectItem value="4">4</SelectItem>
-                      <SelectItem value="5">5</SelectItem>
-                      <SelectItem value="6">6</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
