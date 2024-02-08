@@ -35,6 +35,7 @@ export default function CreateTutorialSheet() {
   const { toast } = useToast();
   const { mutateAsync, isLoading } =
     api.tutorialGroups.createTutorialGroup.useMutation();
+  const { refetch } = api.tutorialGroups.getUserTutorials.useQuery();
 
   const formSchema = z.object({
     courseCode: z.string(),
@@ -48,6 +49,7 @@ export default function CreateTutorialSheet() {
   async function onSubmit(values: z.infer<typeof formSchema>): Promise<void> {
     try {
       await mutateAsync(values);
+      await refetch();
       toast({
         title: "Success!",
         description: "A tutorial group has been created",

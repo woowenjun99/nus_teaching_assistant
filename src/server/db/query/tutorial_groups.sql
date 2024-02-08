@@ -13,3 +13,7 @@ SELECT * FROM TutorialGroups;
 -- name: CreateTutorialGroup :exec
 INSERT INTO TutorialGroups(course_code, course_offering, teaching_assistant)
 VALUES ($1, $2, $3);
+
+-- name: DeleteTutorialGroup :exec
+DELETE FROM TutorialGroups
+WHERE course_code = $1 AND course_offering = $2 AND teaching_assistant = $3;

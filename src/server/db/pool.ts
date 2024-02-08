@@ -10,7 +10,7 @@ export const pool = new Pool({
  *
  * @param callback The series of actions to perform in the transaction.
  */
-export const withTransaction = async (callback: (p: Pool) => Promise<void>) => {
+export const withTransaction = async (callback: (p: Pool) => Promise<unknown>) => {
   try {
     await pool.query("BEGIN");
     await callback(pool);

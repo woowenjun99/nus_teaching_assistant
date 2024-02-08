@@ -80,3 +80,21 @@ export async function createTutorialGroup(client: Client, args: CreateTutorialGr
     });
 }
 
+export const deleteTutorialGroupQuery = `-- name: DeleteTutorialGroup :exec
+DELETE FROM TutorialGroups
+WHERE course_code = $1 AND course_offering = $2 AND teaching_assistant = $3`;
+
+export interface DeleteTutorialGroupArgs {
+    courseCode: string;
+    courseOffering: string;
+    teachingAssistant: string;
+}
+
+export async function deleteTutorialGroup(client: Client, args: DeleteTutorialGroupArgs): Promise<void> {
+    await client.query({
+        text: deleteTutorialGroupQuery,
+        values: [args.courseCode, args.courseOffering, args.teachingAssistant],
+        rowMode: "array"
+    });
+}
+

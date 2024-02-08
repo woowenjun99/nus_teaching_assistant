@@ -1,4 +1,5 @@
-import { api } from "~/trpc/server";
+"use client";
+import { api } from "~/trpc/react";
 import {
   Card,
   CardContent,
@@ -8,7 +9,7 @@ import {
 } from "~/components/ui/card";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
-import { MoreVertical } from "lucide-react";
+import { MoreVertical, Delete, Loader2 } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,13 +22,34 @@ import {
   AlertDialogContent,
   AlertDialogHeader,
   AlertDialogFooter,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogDescription,
+  AlertDialogAction,
 } from "../ui/alert-dialog";
+import { Skeleton } from "../ui/skeleton";
 
-export default async function Tutorials() {
-  const tutorials = await api.tutorialGroups.getUserTutorials.query();
+export default function Tutorials({ isAdmin }: { isAdmin: boolean }) {
+  const {
+    data: tutorials,
+    isLoading,
+    refetch,
+  } = api.tutorialGroups.getUserTutorials.useQuery();
+  const { mutateAsync, isLoading: buttonLoading } =
+    api.tutorialGroups.deleteTutorialGroup.useMutation();
+
+  if (isLoading) {
+    return (
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+        <div className="flex flex-col space-y-3">
+          <Skeleton className="h-[125px] w-[250px] rounded-xl" />
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-[250px]" />
+            <Skeleton className="h-4 w-[200px]" />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
@@ -61,12 +83,14 @@ export default async function Tutorials() {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent side="right">
-                        <DropdownMenuItem>
-                          <span>Edit</span>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                          <AlertDialogTrigger>Delete</AlertDialogTrigger>
-                        </DropdownMenuItem>
+                        {isAdmin ? (
+                          <DropdownMenuItem>
+                            <AlertDialogTrigger className="flex w-full flex-row justify-between">
+                              Delete
+                              <Delete className="my-auto h-4 w-4" />
+                            </AlertDialogTrigger>
+                          </DropdownMenuItem>
+                        ) : null}
                       </DropdownMenuContent>
                     </DropdownMenu>
                     <AlertDialogContent>
@@ -80,7 +104,22 @@ export default async function Tutorials() {
                       </AlertDialogDescription>
                       <AlertDialogFooter>
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction>Continue</AlertDialogAction>
+                        <AlertDialogAction asChild>
+                          <Button
+                            onClick={async () => {
+                              await mutateAsync({
+                                courseCode: tutorial.courseCode,
+                                courseOffering: tutorial.courseOffering,
+                                teachingAssistant: tutorial.teachingAssistant,
+                              });
+
+                              await refetch();
+                            }}
+                            disabled={buttonLoading || isLoading}
+                          >
+                            {buttonLoading ? <Loader2 /> : "Continue"}
+                          </Button>
+                        </AlertDialogAction>
                       </AlertDialogFooter>
                     </AlertDialogContent>
                   </AlertDialog>
