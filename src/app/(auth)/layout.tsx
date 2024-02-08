@@ -24,6 +24,7 @@ import {
 import { signOut } from "next-auth/react";
 import { Button } from "~/components/ui/button";
 import { useTheme } from "next-themes";
+import { Avatar, AvatarFallback } from "~/components/ui/avatar";
 
 function NavigationBar() {
   const { setTheme } = useTheme();
@@ -64,7 +65,6 @@ function NavigationBar() {
               </Drawer>
             </NavigationMenuItem>
 
-            {/* Navbar items */}
             <NavigationMenuItem className="hidden md:block">
               <Link
                 href="/tutorials"
@@ -75,7 +75,8 @@ function NavigationBar() {
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
-        <div className="py-2">
+
+        <div className="flex gap-4 py-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="icon">
@@ -93,6 +94,19 @@ function NavigationBar() {
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => setTheme("system")}>
                 System
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild className="hidden md:block">
+              <Avatar>
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem onClick={() => signOut()}>
+                Logout
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
